@@ -1,0 +1,34 @@
+run:
+  out_dir : "runs/mae/run001"
+  seed: 0
+
+device:
+  prefer: "cuda"
+
+data:
+  kind: "tinyimagenet_mae"
+  root: "TinyImageNet"
+  image_size : 64
+  patch_size: 8
+  batch_size : 32
+  shuffle: True
+
+model:
+  kind: "mae"
+  embedding_dim: 384
+  patch_size : 8
+  mask_ratio : 0.75
+
+optim:
+  kind: "adamw"
+  lr : 1e-3
+  weight_decay : 0.05
+
+train:
+  epochs : 30
+  ckpt_interval : 5
+  best_metric : "loss"
+  best_mode : "min"
+  resume_last : True
+  
+
