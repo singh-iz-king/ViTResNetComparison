@@ -1,0 +1,40 @@
+run:
+  outdir : "runs/finetune/run001"
+  seed : 0
+
+device:
+  prefer : "cuda"
+
+data:
+  kind : "tinyimagenet"
+  root: "TinyImageNet"
+  image_size : 64
+  patch_size : 8
+  batch_size : 32
+  shuffle : True
+  transform : "simclr_strong"
+
+validation:
+  kind : "tinyimagenet_val"
+  root : "tinyimagenet_val"
+  image_size : 64
+  patch_size : 8
+  batch_size : 32
+  shuffle : False
+
+model:
+  kind : "vit_classifier"
+  embedding_dim : 384
+  patch_size : 8
+
+optim:
+  kind : "adamw"
+  lr : 1e-3
+  weight_decay : 0.05
+
+train:
+  epochs: 30
+  ckpt_interval : 5
+  best_metric : "val_acc"
+  best_mode : "max"
+  resume_last : True

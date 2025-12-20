@@ -1,0 +1,32 @@
+run:
+  outdir : "runs/simclr/run001"
+  seed : 0
+
+device:
+  prefer : "cuda"
+
+data:
+  kind : "tinyimagenet_simclr"
+  root: "TinyImageNet"
+  image_size : 64
+  patch_size : 8
+  batch_size : 128
+  shuffle : True
+  transform : "simclr_strong"
+
+model:
+  kind : "simclr_vit"
+  embedding_dim : 384
+  patch_size : 8
+
+optim:
+  kind : "adamw"
+  lr : 1e-3
+  weight_decay : 0.05
+
+train:
+  epochs: 30
+  ckpt_interval : 5
+  best_metric : "loss"
+  best_mode : "min"
+  resume_last : True
