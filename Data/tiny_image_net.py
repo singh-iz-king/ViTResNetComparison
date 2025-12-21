@@ -37,7 +37,6 @@ class PatchifiedTinyImageNetClassifier(datasets.ImageFolder):
 
     def __getitem__(self, index):
         img, y = super().__getitem__(index=index)
-        c, h, w = img.shape
         p = self.patch_size
 
         patches = img.unfold(1, p, p).unfold(2, p, p)
@@ -87,6 +86,7 @@ class PatchifiedTinyImageNetClassifierVal(Dataset):
         self.val_root = val_root
         self.images_dir = os.path.join(val_root, "images")
         self.ann_path = os.path.join(val_root, "val_annotations.txt")
+        self.transform = transform
 
         self.filename_to_wnid = read_val_annotations(self.ann_path)
         self.filenames = sorted(self.filename_to_wnid.keys())
@@ -137,5 +137,35 @@ simclr_transforms = v2.Compose(
         v2.RandAugment(num_ops=2, magnitude=9),
         v2.ToDtype(torch.float32, scale=True),
         v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ]
+)
+
+vit_train_transforms = v2.Compose(
+    [
+        v2.ToImage(),
+        v2.RandomResizedCrop(
+            (64, 64),
+            scale=(0.8, 1.0),
+            ratio=(0.9, 1.1),
+            antialias=True,
+        ),
+        v2.RandomHorizontalFlip(p=0.5),
+        v2.ToDtype(torch.float32, scale=True),
+        v2.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225],
+        ),
+    ]
+)
+
+vit_eval_transforms = v2.Compose(
+    [
+        v2.ToImage(),
+        v2.Resize((64, 64), antialias=True),
+        v2.ToDtype(torch.float32, scale=True),
+        v2.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225],
+        ),
     ]
 )

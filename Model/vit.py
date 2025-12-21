@@ -34,7 +34,7 @@ class PatchEmbedder(nn.Module):
 
         patches = self.l1(x)
 
-        cls_expanded = self.cls_token.expand(B, -1, -1)
+        cls_expanded = self.cls_token.expand(B, -1, -1).to(x.device)
 
         patches_and_cls = torch.cat([cls_expanded, patches], dim=1)
 
@@ -92,7 +92,7 @@ class MultiheadedSelfAttention(nn.Module):
         values = torch.swapaxes(values, axis0=1, axis1=2).contiguous()
 
         similarities = torch.matmul(
-            queries, torch.transpose(keys, axis0=2, axis1=3)
+            queries, torch.transpose(keys, dim0=2, dim1=3)
         )  # (B, num_heads, N+1, N+1)
         scaled_similarities = F.softmax(
             similarities / (self.embedding_dim / self.num_heads) ** 0.5, dim=-1
@@ -103,7 +103,7 @@ class MultiheadedSelfAttention(nn.Module):
         )  # (B, num_heads, N+1, embedding_dim / num_heads)
 
         # Switching attention back to correct shape
-        attention = torch.swapaxes(attention, axis0=1, axis2=2).contiguous()
+        attention = torch.swapaxes(attention, axis0=1, axis1=2).contiguous()
         attention = torch.reshape(
             attention, shape=(B, N_1, self.embedding_dim)
         ).contiguous()

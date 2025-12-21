@@ -1,5 +1,5 @@
 run:
-  outdir : "runs/simclr/run001"
+  out_dir : "runs/simclr/run001"
   seed : 0
 
 device:
@@ -10,7 +10,7 @@ data:
   root: "TinyImageNet"
   image_size : 64
   patch_size : 8
-  batch_size : 128
+  batch_size : 256
   shuffle : True
   transform : "simclr_strong"
 

@@ -27,7 +27,7 @@ def train_one_epoch(model, loader, optimizer, step_fn, device):
     return avg_loss
 
 
-def evaluate(model, val_loader, optimizer, eval_fn, device):
+def evaluate(model, val_loader, eval_fn, device):
 
     val_metric = {}
 

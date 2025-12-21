@@ -10,7 +10,7 @@ data:
   root: "TinyImageNet"
   image_size : 64
   patch_size : 8
-  batch_size : 32
+  batch_size : 64
   shuffle : True
   transform : "simclr_strong"
 
@@ -19,7 +19,7 @@ validation:
   root : "tinyimagenet_val"
   image_size : 64
   patch_size : 8
-  batch_size : 32
+  batch_size : 64
   shuffle : False
 
 model:
@@ -35,6 +35,6 @@ optim:
 train:
   epochs: 30
   ckpt_interval : 5
-  best_metric : "val_acc"
+  best_metric : "accuracy"
   best_mode : "max"
   resume_last : True

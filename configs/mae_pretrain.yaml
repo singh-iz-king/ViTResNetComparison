@@ -10,7 +10,7 @@ data:
   root: "TinyImageNet"
   image_size : 64
   patch_size: 8
-  batch_size : 32
+  batch_size : 256
   shuffle: True
 
 model:

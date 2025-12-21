@@ -59,3 +59,18 @@ def finetune_step(model, batch, device):
     metrics = {"loss": loss.item(), "accuracy": acc}
 
     return loss, metrics
+
+
+def finetune_eval(model, batch, device):
+    imgs, labels = batch
+    imgs, labels = imgs.to(device), labels.to(device)
+
+    logits = model(imgs)
+
+    predicted_labels = torch.argmax(logits, dim=1)
+
+    acc = (predicted_labels == labels).float().mean().item()
+
+    metrics = {"accuracy": acc}
+
+    return metrics

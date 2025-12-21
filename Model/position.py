@@ -12,9 +12,9 @@ def get_2D_sincos_position_embedding(embedding_dim, gridsize):
 
     pos_embedding_h = get_1D_sincos_position_embedding(embedding_dim // 2, grid[0])
     pos_embedding_w = get_1D_sincos_position_embedding(embedding_dim // 2, grid[1])
-    pos_hw = torch.cat([pos_embedding_h, pos_embedding_w], dim=1)  # (G^2, D)
+    pos_hw = torch.cat([pos_embedding_h, pos_embedding_w], dim=-1)  # (G^2, D)
 
-    cls_pad = torch.zeros([1, embedding_dim])
+    cls_pad = torch.zeros([1, embedding_dim], device=device)
 
     # prepend CLS as a separate token
     pos_embeddings = torch.cat([cls_pad, pos_hw], dim=0)  # (G^2 + 1, D)

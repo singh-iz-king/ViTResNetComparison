@@ -1,0 +1,22 @@
+pipeline:
+  - name: mae_pretrain
+    config: configs/mae_pretrain.yaml
+    outputs:
+      encoder_path: runs/mae/run001/checkpoints/encoder_only.pt
+
+  - name: finetune_from_mae
+    config: configs/finetune.yaml
+    overrides:
+      model.init_encoder_from: runs/mae/run001/checkpoints/encoder_only.pt
+      run.out_dir: runs/finetune_from_mae/run001
+
+  - name: simclr_pretrain
+    config: configs/simclr_pretrain.yaml
+    outputs:
+      encoder_path: runs/simclr/run001/checkpoints/encoder_only.pt
+
+  - name: finetune_from_simclr
+    config: configs/finetune.yaml
+    overrides:
+      model.init_encoder_from: runs/simclr/run001/checkpoints/encoder_only.pt
+      run.out_dir: runs/finetune_from_simclr/run001

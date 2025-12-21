@@ -8,6 +8,8 @@ from Data.tiny_image_net import (
     PatchifiedTinyImageNetClassifierVal,
     mae_transforms,
     simclr_transforms,
+    vit_train_transforms,
+    vit_eval_transforms,
 )
 
 
@@ -33,10 +35,14 @@ def build_loaders(cfg):
 
     if kind == "tinyimagenet":
         ds_train = PatchifiedTinyImageNetClassifier(
-            d["root"], d["patch_size"], transform=None
+            d["root"], d["patch_size"], transform=vit_train_transforms
         )
+        v = cfg["validation"]
         ds_val = PatchifiedTinyImageNetClassifierVal(
-            d["root"], ds_train.class_to_idx, d["patch_size"], transform=None
+            v["root"],
+            ds_train.class_to_idx,
+            v["patch_size"],
+            transform=vit_eval_transforms,
         )
         train_loader, val_loader = DataLoader(
             ds_train, d["batch_size"], shuffle=True
